@@ -40,7 +40,7 @@ class ApiController extends Controller
      */
     public function seriesAction(Request $request)
     {
-      $format = "json";
+      $format = $this->getFormatParameter($request);
       $results = $this->findAll("Seriescatalog", $format);
       return $this->renderResults($results);
     }
@@ -50,7 +50,7 @@ class ApiController extends Controller
      */
     public function seriesDetailAction(Request $request, $siteId)
     {
-      $format = "json";
+      $format = $this->getFormatParameter($request);
       $results = $this->findBySiteId("Seriescatalog", $format, $siteId);
       return $this->renderResults($results);
     }
@@ -60,9 +60,9 @@ class ApiController extends Controller
      */
     public function seriesValuesAction(Request $request, $siteId, $tablename)
     {
+      $format = $this->getFormatParameter($request);
       $series = $this->getSeriesValues($request, $tablename);
-      $serializer = $this->container->get('serializer');
-      $results = $serializer->serialize($series, 'json');
+      $results = $this->serializeResults($this->container, $series, $format);
       return $this->renderResults($results);
     }
 
@@ -72,13 +72,8 @@ class ApiController extends Controller
      */
     public function sitesAction(Request $request)
     {
-      // $request->headers->set('content-type: ', 'application/json; charset=utf-8');
-      // $request->headers->set('Access-Control-Allow-Origin: ', '*');
-      // echo $request;
-      // echo "<br />";
-      // echo "<br />";
-      // echo "<br />";
-      $results = $this->findAll("Sitecatalog", "json");
+      $format = $this->getFormatParameter($request);
+      $results = $this->findAll("Sitecatalog", $format);
       return $this->renderResults($results);
     }
 
@@ -87,9 +82,18 @@ class ApiController extends Controller
      */
     public function siteDetailAction(Request $request, $siteId)
     {
-      $format = "json";
+      $format = $this->getFormatParameter($request);
       $results = $this->findBySiteId("Sitecatalog", $format, $siteId);
       return $this->renderResults($results);
+    }
+
+    private function getFormatParameter(Request $request){
+        $format = "json";
+        $requestParams = $this->getRequestParams($request);
+        if(isset($requestParams['Format'])){
+          // $format = $requestParams['Format'];
+        }
+        return $format;
     }
 
     function getSeriesValues($request, $tablename)
@@ -150,6 +154,11 @@ class ApiController extends Controller
         $requestParams['End'] = $endDate;
       }
 
+      $format = $request->query->get('format');
+      if($format != null){
+        $requestParams['Format'] = $format;
+      }
+
       return $requestParams;
     }
 
@@ -176,7 +185,6 @@ class ApiController extends Controller
       ));
     }
 
-
     function findAll($catalog, $format){
       $series = $this->getDoctrine()
           ->getRepository("AppBundle:".$catalog)
@@ -191,13 +199,30 @@ class ApiController extends Controller
           ->getRepository("AppBundle:".$catalog)
           ->findBySiteid($siteId);
       $container = $this->container;
+
       $results = $this->serializeResults($container, $series, $format);
       return $results;
     }
 
+    function convertToWml($series){
+
+    }
+
     function serializeResults($container, $series, $format){
-      $serializer = $container->get('serializer');
-      $results = $serializer->serialize($series, $format);
+      switch($format){
+        case "json":
+          $serializer = $container->get('serializer');
+          $results = $serializer->serialize($series, $format);
+          break;
+        case "wml":
+          break;
+        case "csv":
+          break;
+        default:
+          $serializer = $container->get('serializer');
+          $results = $serializer->serialize($series, $format);
+          break;
+      }
       return $results;
     }
 }
