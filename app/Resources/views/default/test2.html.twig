@@ -1,0 +1,19 @@
+<h3>All Series</h3>
+{% for catalog in series %}
+<p>
+  <lable>ID:
+  </lable>{{ catalog.id }}</p>
+<p>
+  <lable>Parent ID:
+  </lable>{{ catalog.parentid }}</p>
+<p>
+  <lable>Name:
+  </lable>{{ catalog.name }}</p>
+<p>
+  <lable>Parameter:
+  </lable>{{ catalog.parameter }}</p>
+<p>
+  <lable>Site ID:
+  </lable>{{ catalog.siteid }}</p>
+<hr/>
+{% endfor %}

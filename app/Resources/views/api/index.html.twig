@@ -1,0 +1,104 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>USBR Water API V1</h1>
+
+<h2>Available URLs</h2>
+
+<h3>Series</h3>
+<ul>
+  <li>/api/series</li>
+  <li>/api/series/{siteId}</li>
+  <li>Example:
+    <ul>
+      <li>
+        <a href="series/LakeMohave">/api/series/LakeMohave</a>
+      </li>
+      <li>Additional Parameters:
+        <ul>
+          <li>start
+            <br/>
+            Usage: "yyyy-mm-dd" *must be surrounded by quotes
+          </li>
+          <li>end
+            <br/>
+            Usage: "yyyy-mm-dd" *must be surrounded by quotes</li>
+          <li>Example:
+            <a href='series/LakeMohave/lchdb2_yearly_13971?start="2015-11-01"&end="2015-12-31"'>api/series/LakeMohave/lchdb2_yearly_13971?start="2015-11-01"&end="2015-12-31"</a>
+          </li>
+        </ul>
+      </li>
+      <li>Returned Attributes:
+        <ul>
+          <li>datetime</li>
+          <li>value</li>
+          <li>flag</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Returned Attributes:
+    <ul>
+      <li>parentid</li>
+      <li>isfolder</li>
+      <li>sortorder</li>
+      <li>iconname</li>
+      <li>name</li>
+      <li>siteid</li>
+      <li>units</li>
+      <li>timeinterval</li>
+      <li>parameter</li>
+      <li>tablename</li>
+      <li>provider</li>
+      <li>connectionstring</li>
+      <li>expression</li>
+      <li>notes</li>
+      <li>enabled</li>
+      <li>id</li>
+    </ul>
+  </li>
+</ul>
+<h3>Sites</h3>
+<ul>
+  <li>/api/sites/</li>
+  <li>/api/sites/{siteId}</li>
+  <li>Example:
+    <a href="/api/sites/LakeMohave">/api/sites/LakeMohave</a>
+  </li>
+  <li>Returned Attributes:
+    <ul>
+      <li>description</li>
+      <li>state</li>
+      <li>latitude</li>
+      <li>longitude</li>
+      <li>timezone</li>
+      <li>install</li>
+      <li>horizontal_datum</li>
+      <li>vertical_datum</li>
+      <li>vertical_accuracy</li>
+      <li>elevation_method</li>
+      <li>tz_offset</li>
+      <li>active_flag</li>
+      <li>type</li>
+      <li>responsibility</li>
+      <li>agency_region</li>
+      <li>siteid</li>
+      <li>elevation</li>
+    </ul>
+  </li>
+</ul>
+
+<h3>Notes</h3>
+<ul>
+  <li>Currently only allows for json responses</li>
+</ul>
+
+<h3>Feature Requests</h3>
+<ul>
+  <li>None! Please contact
+    <a href="">Sheri Cliff
+    </a>
+    to request a feature</li>
+</ul>
+
+{% endblock %}

@@ -1,0 +1,73 @@
+<head>
+	<title>USBR Sites</title>
+
+  <base href="/">
+
+  <script src="https://code.angularjs.org/2.0.0-beta.0/angular2-polyfills.js"></script>
+  <script src="https://code.angularjs.org/tools/system.js"></script>
+  <script src="https://code.angularjs.org/tools/typescript.js"></script>
+  <script src="https://code.angularjs.org/2.0.0-beta.0/Rx.js"></script>
+	<script src="https://code.angularjs.org/2.0.0-beta.0/http.js"></script>
+  <script src="https://code.angularjs.org/2.0.0-beta.0/angular2.dev.js"></script>
+  <script src="https://code.angularjs.org/2.0.0-beta.0/router.dev.js"></script>
+	<!-- 1. Load libraries -->
+	<!-- <script src="node_modules/angular2/bundles/angular2-polyfills.js"></script>
+	<script src="node_modules/systemjs/dist/system.src.js"></script>
+	<script src="node_modules/rxjs/bundles/Rx.js"></script>
+	<script src="node_modules/angular2/bundles/http.js"></script>
+	<script src="node_modules/angular2/bundles/angular2.dev.js"></script>
+  <script src="node_modules/angular2/bundles/router.dev.js"></script> -->
+
+  <!-- google chart api -->
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+
+	<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" crossorigin="anonymous"></script>
+	<!-- 2. Configure SystemJS -->
+	<script>
+		System.config({
+			packages: {
+				app: {
+					format: 'register',
+					defaultExtension: 'js'
+				},
+				// rxjs: {
+				// 	defaultExtension: 'js'
+				// }
+			},
+			map: {
+				// rxjs: 'node_modules/rxjs' //or wherever you have it installed
+			},
+		});
+		System.import('api/angular/app/boot')
+			.then(null, console.error.bind(console));
+
+    // angular2.module('myApp', []).config(function($interpolateProvider){
+    //   $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
+    // });
+	</script>
+  <style>
+  .fake-click{
+    color: blue;
+
+  }
+  .fake-click:hover{
+    cursor: pointer;
+  }
+  </style>
+</head>
+
+<!-- 3. Display the application -->
+
+<body>
+	<div class="container">
+		<div class="row">
+			<my-app>Loading...</my-app>
+		</div>
+	</div>
+</body>
+
+</html>

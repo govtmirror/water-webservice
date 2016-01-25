@@ -1,0 +1,55 @@
+{% verbatim %}
+<div class="row">
+  <div class="col-md-6">
+    <h3 *ngIf="!selectedSite">Select a site to see details</h3>
+    <div *ngIf="selectedSite">
+      <h3>Site Details</h3>
+      <p *ngIf="selectedSite.description">description: {{ selectedSite.description }}</p>
+      <p *ngIf="selectedSite.state">state: {{ selectedSite.state }}</p>
+      <p *ngIf="selectedSite.latitude">latitude: {{ selectedSite.latitude }}</p>
+      <p *ngIf="selectedSite.longitude">longitude: {{ selectedSite.longitude }}</p>
+      <p *ngIf="selectedSite.timezone">timezone: {{ selectedSite.timezone }}</p>
+      <p *ngIf="selectedSite.install">install: {{ selectedSite.install }}</p>
+      <p *ngIf="selectedSite.horizontal_datum">horizontal_datum: {{ selectedSite.horizontal_datum }}</p>
+      <p *ngIf="selectedSite.vertical_datum">vertical_datum: {{ selectedSite.vertical_datum }}</p>
+      <p *ngIf="selectedSite.vertical_accuracy">vertical_accuracy: {{ selectedSite.vertical_accuracy }}</p>
+      <p *ngIf="selectedSite.elevation_method">elevation_method: {{ selectedSite.elevation_method }}</p>
+      <p *ngIf="selectedSite.tz_offset">tz_offset: {{ selectedSite.tz_offset }}</p>
+      <p *ngIf="selectedSite.active_flag">active_flag: {{ selectedSite.active_flag }}</p>
+      <p *ngIf="selectedSite.type">type: {{ selectedSite.type }}</p>
+      <p *ngIf="selectedSite.responsibility">responsibility: {{ selectedSite.responsibility }}</p>
+      <p *ngIf="selectedSite.agency_region">agency_region: {{ selectedSite.agency_region }}</p>
+      <p *ngIf="selectedSite.siteid">siteid: {{ selectedSite.siteid }}</p>
+      <p *ngIf="selectedSite.elevation">elevation: {{ selectedSite.elevation }}</p>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <h3>Available info</h3>
+    <ul>
+      <li *ngFor="#site of series" (click)="onSelect(site)">
+        <!-- (click)="onSelect(site)" -->
+        {{ site.parameter }}
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="row">
+  <div *ngIf="selectedSiteSeries">
+    <h3>Series info</h3>
+    <p>
+      <label>name: </label>{{ selectedSiteSeries.name }}</p>
+    <p>
+      <label>units: </label>{{ selectedSiteSeries.units }}</p>
+    <p>
+      <label>timeinterval: </label>{{ selectedSiteSeries.timeinterval }}</p>
+    <p>
+      <label>parameter: </label>{{ selectedSiteSeries.parameter }}</p>
+    <!-- <div id="seriesChart"></div> -->
+    <div id="dashboard_div">
+      <!--Divs that will hold each control and chart-->
+      <div id="filter_div"></div>
+      <div id="chart_div"></div>
+    </div>
+  </div>
+</div>
+{% endverbatim %}

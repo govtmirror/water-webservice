@@ -1,0 +1,57 @@
+{% verbatim %}
+<style>
+  .siteList {
+    height: 350px;
+  }
+
+  .y-scroll {
+    overflow-y: scroll;
+  }
+</style>
+<div class="col-md-7">
+  <h1>USBR Sites!</h1>
+  <input [(ngModel)]="siteFilter" />
+  <br />
+  <lable>Show All: </lable>
+  <input type="checkbox" checked="checked" [(ngModel)]="showAll" />
+  <div class="siteListScroll">
+    <ul class="siteList y-scroll" *ngIf="showAll || siteFilter">
+      <li class="fake-click" *ngFor="#site of (sites | filterPipe:siteFilter)" (click)="onSelect(site)">
+        {{ site.description }}
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="col-md-5">
+  <div class="row">
+    <h3 *ngIf="!selectedSite">Select a site to see details</h3>
+    <div *ngIf="selectedSite">
+      <h3>Site Details</h3>
+      <p *ngIf="selectedSite.description">description: {{ selectedSite.description }}</p>
+      <p *ngIf="selectedSite.state">state: {{ selectedSite.state }}</p>
+      <p *ngIf="selectedSite.latitude">latitude: {{ selectedSite.latitude }}</p>
+      <p *ngIf="selectedSite.longitude">longitude: {{ selectedSite.longitude }}</p>
+      <p *ngIf="selectedSite.timezone">timezone: {{ selectedSite.timezone }}</p>
+      <p *ngIf="selectedSite.install">install: {{ selectedSite.install }}</p>
+      <p *ngIf="selectedSite.horizontal_datum">horizontal_datum: {{ selectedSite.horizontal_datum }}</p>
+      <p *ngIf="selectedSite.vertical_datum">vertical_datum: {{ selectedSite.vertical_datum }}</p>
+      <p *ngIf="selectedSite.vertical_accuracy">vertical_accuracy: {{ selectedSite.vertical_accuracy }}</p>
+      <p *ngIf="selectedSite.elevation_method">elevation_method: {{ selectedSite.elevation_method }}</p>
+      <p *ngIf="selectedSite.tz_offset">tz_offset: {{ selectedSite.tz_offset }}</p>
+      <p *ngIf="selectedSite.active_flag">active_flag: {{ selectedSite.active_flag }}</p>
+      <p *ngIf="selectedSite.type">type: {{ selectedSite.type }}</p>
+      <p *ngIf="selectedSite.responsibility">responsibility: {{ selectedSite.responsibility }}</p>
+      <p *ngIf="selectedSite.agency_region">agency_region: {{ selectedSite.agency_region }}</p>
+      <p *ngIf="selectedSite.siteid">siteid: {{ selectedSite.siteid }}</p>
+      <p *ngIf="selectedSite.elevation">elevation: {{ selectedSite.elevation }}</p>
+      <p *ngIf="selectedSite.siteid"><a href="site/{{selectedSite.siteid}}">See more Details</a></p>
+    </div>
+  </div>
+
+</div>
+<div class="col-md-12">
+  <div id="visualization"></div>
+  <p class="text-center"><a href="#" (click)="resetMap()">Reset Map</a></p>
+</div>
+
+{% endverbatim %}
