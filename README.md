@@ -84,9 +84,11 @@ type | string | EX: agrimet, stream, reservoir, weather, canal, diversion, snote
 
 #### TableName
 *Refers to the TableName column in SeriesCatalog*
+
 Name | Type
 :----|:----
 datetime | datetime
 value | float
 flag | string
+
 ---
