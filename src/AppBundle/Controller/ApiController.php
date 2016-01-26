@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\DomCrawler\Crawler;
 
 class ApiController extends Controller
 {
@@ -56,10 +57,22 @@ class ApiController extends Controller
     }
 
     /**
-     * @Route("/api/series/{siteId}/{tablename}", name="series_values_v1")
+     * @Route("/api/series/{siteId}/{tablename}", name="series_values_v2")
      */
     public function seriesValuesAction(Request $request, $siteId, $tablename)
     {
+      $format = $this->getFormatParameter($request);
+      $series = $this->getSeriesValues($request, $tablename);
+      $results = $this->serializeResults($this->container, $series, $format);
+      return $this->renderResults($results);
+    }
+
+    /**
+     * @Route("/api/series_WML/{siteId}/{tablename}", name="series_values_v1")
+     */
+    public function seriesValuesAction_WML(Request $request, $siteId, $tablename)
+    {
+      //Controller handles WML@ Requests
       $format = $this->getFormatParameter($request);
       $series = $this->getSeriesValues($request, $tablename);
       $results = $this->serializeResults($this->container, $series, $format);
@@ -88,11 +101,11 @@ class ApiController extends Controller
     }
 
     private function getFormatParameter(Request $request){
-        $format = "json";
+        // $format = "json";
         $requestParams = $this->getRequestParams($request);
         if(isset($requestParams['Format'])){
-          // $format = $requestParams['Format'];
-        }
+          $format = $requestParams['Format'];
+                }
         return $format;
     }
 
@@ -154,7 +167,7 @@ class ApiController extends Controller
         $requestParams['End'] = $endDate;
       }
 
-      $format = $request->query->get('format');
+      $format = $request->query->get('Format');
       if($format != null){
         $requestParams['Format'] = $format;
       }
@@ -215,6 +228,7 @@ class ApiController extends Controller
           $results = $serializer->serialize($series, $format);
           break;
         case "wml":
+        $results = $this->_build_WML($series);
           break;
         case "csv":
           break;
@@ -224,5 +238,57 @@ class ApiController extends Controller
           break;
       }
       return $results;
+    }
+
+    function _build_WML($series){
+      $xml = new \DOMDocument();
+
+      //Collection
+      $wml2Collection = $xml->createElement("wml2:Collection");
+      $wml2Collection = $xml->appendChild($wml2Collection);
+
+      //gml:description
+      $gmlDescription = $xml->createElement("gml:description", "KISTERS KiWIS WaterML2.0 EXAMPLE");
+      $gmlDescription = $wml2Collection->appendChild($gmlDescription);
+
+      //wml2:metadata
+      $wml2Metadata = $xml->createElement("wml2:metadata");
+      $wml2Metadata = $wml2Collection->appendChild($wml2Metadata);
+
+      //wml2:DocumentMetadata
+      $wml2DocumentMetadata = $xml->createElement("wml2:DocumentMetadata");
+      $wml2DocumentMetadata = $wml2Metadata->appendChild($wml2DocumentMetadata);
+
+      //wml2:generationDate
+      $wml2generationDate = $xml->createElement("wml2:generationDate","2016-01-22");
+      $wml2generationDate = $wml2DocumentMetadata->appendChild($wml2generationDate);
+
+      //wml2:generationSystem
+      $wml2GenerationSystem = $xml->createElement("wml2:generationSystem","USBR");
+      $wml2GenerationSystem = $wml2DocumentMetadata->appendChild($wml2GenerationSystem);
+
+      //MeasurementTimeseries
+      $MeasurementTimeseries = $xml->createElement("wml2:MeasurementTimeseries");
+      $MeasurementTimeseries = $wml2Collection->appendChild($MeasurementTimeseries);
+
+      //Loop thru the raw data
+
+          foreach ($series as $key => $value) {
+
+                  $xml_point = $xml->createElement("wml2:point");
+                  $xml_point = $MeasurementTimeseries->appendChild($xml_point);
+
+                  $xml_MeasurementTVP = $xml->createElement("wml2:MeasurementTVP");
+                  $xml_MeasurementTVP = $xml_point->appendChild($xml_MeasurementTVP);
+
+                  $xml_time = $xml->createElement("wml2:time",$value['datetime']);
+                  $xml_time = $xml_MeasurementTVP->appendChild($xml_time);
+                  $xml_value = $xml->createElement("wml2:value",$value['value']);
+                  $xml_value = $xml_MeasurementTVP->appendChild($xml_value);
+
+                }
+
+      $xmlString = $xml->saveXML();
+      return $xmlString;
     }
 }
