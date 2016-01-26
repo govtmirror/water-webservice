@@ -38,7 +38,7 @@
     - start
     - end
     - /api/series/{siteid}/{seriesid}?start="2015-11-01"&end="2015-12-31"
-    
+
 ---
 ## Database Structure
 #### SiteCatalog
