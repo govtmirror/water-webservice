@@ -28,13 +28,24 @@ class ApiController extends Controller
      */
     public function indexAction(Request $request)
     {
-      // echo var_dump(explode(".",$_SERVER["REQUEST_URI"]));
-        // replace this example code with whatever you need
-        return $this->render('api/index.html.twig', array(
-            'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..'),
-        ));
+        $response = $this->render('api/index.html.twig', array());
+        return $response;
     }
 
+    public function returnCsvAction(){
+    // If you need to send a CSV file directly to the browser,
+    // without writing in an external file,
+    // you can open the output and use fputcsv on it..
+    //
+    // $out = fopen('php://output', 'w');
+    // fputcsv($out, array('this','is some', 'csv "stuff", you know.'));
+    // fclose($out);
+    //
+      $response->headers->set('Content-Type', 'text/csv');
+      $response->headers->set('Content-Disposition', 'attachment; filename="export.csv"');
+
+      return $response;
+    }
 
     /**
      * @Route("/api/series", name="series_v1")
@@ -299,6 +310,7 @@ class ApiController extends Controller
     }
 
     function buildCsv($series){
+      $header = $this -> buildHeader($series);
 
       // foreach ($series as $value) {
       //   echo var_dump($value[0]);
