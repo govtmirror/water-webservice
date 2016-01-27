@@ -101,7 +101,8 @@ class ApiController extends Controller
     }
 
     private function getFormatParameter(Request $request){
-        // $format = "json";
+        // Default the format to json
+        $format = "json";
         $requestParams = $this->getRequestParams($request);
         if(isset($requestParams['Format'])){
           $format = $requestParams['Format'];
