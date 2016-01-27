@@ -100,13 +100,13 @@ class ApiController extends Controller
       return $this->renderResults($results);
     }
 
-    private function getFormatParameter(Request $request){
+    function getFormatParameter(Request $request){
         // Default the format to json
         $format = "json";
         $requestParams = $this->getRequestParams($request);
         if(isset($requestParams['Format'])){
           $format = $requestParams['Format'];
-                }
+        }
         return $format;
     }
 
@@ -229,7 +229,7 @@ class ApiController extends Controller
           $results = $serializer->serialize($series, $format);
           break;
         case "wml":
-        $results = $this->_build_WML($series);
+          $results = $this->_build_WML($series);
           break;
         case "csv":
           break;
@@ -273,21 +273,25 @@ class ApiController extends Controller
       $MeasurementTimeseries = $wml2Collection->appendChild($MeasurementTimeseries);
 
       //Loop thru the raw data
+      foreach ($series as $key => $value) {
 
-          foreach ($series as $key => $value) {
+        $xml_point = $xml->createElement("wml2:point");
+        $xml_point = $MeasurementTimeseries->appendChild($xml_point);
 
-                  $xml_point = $xml->createElement("wml2:point");
-                  $xml_point = $MeasurementTimeseries->appendChild($xml_point);
+        $xml_MeasurementTVP = $xml->createElement("wml2:MeasurementTVP");
+        $xml_MeasurementTVP = $xml_point->appendChild($xml_MeasurementTVP);
 
-                  $xml_MeasurementTVP = $xml->createElement("wml2:MeasurementTVP");
-                  $xml_MeasurementTVP = $xml_point->appendChild($xml_MeasurementTVP);
-
-                  $xml_time = $xml->createElement("wml2:time",$value['datetime']);
-                  $xml_time = $xml_MeasurementTVP->appendChild($xml_time);
-                  $xml_value = $xml->createElement("wml2:value",$value['value']);
-                  $xml_value = $xml_MeasurementTVP->appendChild($xml_value);
-
-                }
+        if(array_key_exists('datetime',$value))
+        {
+          $xml_time = $xml->createElement("wml2:time",$value['datetime']);
+          $xml_time = $xml_MeasurementTVP->appendChild($xml_time);
+        }
+        if(array_key_exists('value',$value))
+        {
+          $xml_value = $xml->createElement("wml2:value",$value['value']);
+          $xml_value = $xml_MeasurementTVP->appendChild($xml_value);
+        }
+      }
 
       $xmlString = $xml->saveXML();
       return $xmlString;

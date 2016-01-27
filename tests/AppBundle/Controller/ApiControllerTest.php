@@ -40,15 +40,6 @@ class ApiControllerTest extends WebTestCase
         $this->assertEquals(null, $result);
     }
 
-    // TODO single characters are timezones. Fix in future
-    // public function testgetDateTimeFromStringWithOnceCharacter()
-    // {
-    //     $apiController = new ApiController();
-    //     $result = $apiController->getDateTimeFromString("a");
-    //
-    //     $this->assertEquals(null, $result);
-    // }
-
     function testgetRequestParamsStartDateOnly(){
       $client = static::createClient();
       $crawler = $client->request('GET', '/api/series/LakeMohave/lchdb2_yearly_13971?start="2015-11-01"');
@@ -191,9 +182,6 @@ class ApiControllerTest extends WebTestCase
       $this->assertEquals($sql, $result);
     }
 
-    /**
-     * @group failing
-     */
     function testserializeResults(){
       $format = 'json';
       $series = new Seriescatalog();
@@ -221,4 +209,53 @@ class ApiControllerTest extends WebTestCase
       $result = $apiController->serializeResults($this->container, $seriesArray, $format);
       $this->assertEquals($serializedArray, $result);
     }
+
+    function testgetFormatParameterCsv(){
+      $client = static::createClient();
+      $crawler = $client->request('GET', '/api/sites?Format=csv');
+      $request = $client->getRequest();
+
+      $apiController = new ApiController();
+      $result = $apiController->getFormatParameter($request);
+      $this->assertEquals('csv', $result);
+    }
+
+    function testgetFormatParameterJson(){
+      $client = static::createClient();
+      $crawler = $client->request('GET', '/api/sites?Format=json');
+      $request = $client->getRequest();
+
+      $apiController = new ApiController();
+      $result = $apiController->getFormatParameter($request);
+      $this->assertEquals('json', $result);
+    }
+
+    function testgetFormatParameter(){
+      $client = static::createClient();
+      $crawler = $client->request('GET', '/api/sites');
+      $request = $client->getRequest();
+
+      $apiController = new ApiController();
+      $result = $apiController->getFormatParameter($request);
+      $this->assertEquals('json', $result);
+    }
+
+    function testgetFormatParameterWml(){
+      $client = static::createClient();
+      $crawler = $client->request('GET', '/api/sites?Format=wml');
+      $request = $client->getRequest();
+
+      $apiController = new ApiController();
+      $result = $apiController->getFormatParameter($request);
+      $this->assertEquals('wml', $result);
+    }
+
+    // TODO single characters are timezones. Fix in future
+    // public function testgetDateTimeFromStringWithOnceCharacter()
+    // {
+    //     $apiController = new ApiController();
+    //     $result = $apiController->getDateTimeFromString("a");
+    //
+    //     $this->assertEquals(null, $result);
+    // }
 }
