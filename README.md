@@ -15,6 +15,9 @@
 
 #### Composer
 *Note: There is currently an error when composer tries to clear cache. It points to the wrong folder. This shouldn't effect any of the installed packages.*
+
+*When composer reaches the database creation portion, use the same username and password from above. You can change this in parameters.yml later.*
+
     curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
     cd /path/to/project
     composer install
