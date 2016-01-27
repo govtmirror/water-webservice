@@ -299,10 +299,27 @@ class ApiController extends Controller
     }
 
     function buildCsv($series){
-      $arrayKeys = $this->getObjectVariables($series);
+
       // foreach ($series as $value) {
       //   echo var_dump($value[0]);
       // }
+    }
+
+    function buildHeader($array){
+      $arrayKeys = $this->getObjectVariables($array);
+      $keysCount = count($arrayKeys);
+      $count = 0;
+      $header = "";
+      foreach ($arrayKeys as $key => $value) {
+        $header = $header.$value;
+
+        // Add the comma if it isn't the last object in the array
+        $count++;
+        if($count != $keysCount){
+          $header = $header.", ";
+        }
+      }
+      return $header;
     }
 
     function getObjectVariables($array){
