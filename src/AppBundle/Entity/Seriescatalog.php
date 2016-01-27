@@ -17,105 +17,105 @@ class Seriescatalog
      *
      * @ORM\Column(name="parentid", type="integer", nullable=false)
      */
-    private $parentid = '0';
+    public $parentid = '0';
 
     /**
      * @var integer
      *
      * @ORM\Column(name="isfolder", type="smallint", nullable=false)
      */
-    private $isfolder = '0';
+    public $isfolder = '0';
 
     /**
      * @var integer
      *
      * @ORM\Column(name="sortorder", type="integer", nullable=false)
      */
-    private $sortorder = '0';
+    public $sortorder = '0';
 
     /**
      * @var string
      *
      * @ORM\Column(name="iconname", type="string", length=100, nullable=false)
      */
-    private $iconname = '';
+    public $iconname = '';
 
     /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=200, nullable=false)
      */
-    private $name = '';
+    public $name = '';
 
     /**
      * @var string
      *
      * @ORM\Column(name="siteid", type="string", length=2600, nullable=false)
      */
-    private $siteid = '';
+    public $siteid = '';
 
     /**
      * @var string
      *
      * @ORM\Column(name="units", type="string", length=100, nullable=false)
      */
-    private $units = '';
+    public $units = '';
 
     /**
      * @var string
      *
      * @ORM\Column(name="timeinterval", type="string", length=100, nullable=false)
      */
-    private $timeinterval = 'irregular';
+    public $timeinterval = 'irregular';
 
     /**
      * @var string
      *
      * @ORM\Column(name="parameter", type="string", length=100, nullable=false)
      */
-    private $parameter = '';
+    public $parameter = '';
 
     /**
      * @var string
      *
      * @ORM\Column(name="tablename", type="string", length=128, nullable=false)
      */
-    private $tablename = '';
+    public $tablename = '';
 
     /**
      * @var string
      *
      * @ORM\Column(name="provider", type="string", length=200, nullable=false)
      */
-    private $provider = '';
+    public $provider = '';
 
     /**
      * @var string
      *
      * @ORM\Column(name="connectionstring", type="string", length=2600, nullable=false)
      */
-    private $connectionstring = '';
+    public $connectionstring = '';
 
     /**
      * @var string
      *
      * @ORM\Column(name="expression", type="string", length=2048, nullable=false)
      */
-    private $expression = '';
+    public $expression = '';
 
     /**
      * @var string
      *
      * @ORM\Column(name="notes", type="string", length=2048, nullable=false)
      */
-    private $notes = '';
+    public $notes = '';
 
     /**
      * @var integer
      *
      * @ORM\Column(name="enabled", type="smallint", nullable=false)
      */
-    private $enabled = '1';
+    public $enabled = '1';
 
     /**
      * @var integer
@@ -124,7 +124,7 @@ class Seriescatalog
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    public $id;
 
 
 

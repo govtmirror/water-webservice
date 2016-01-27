@@ -232,6 +232,7 @@ class ApiController extends Controller
           $results = $this->_build_WML($series);
           break;
         case "csv":
+          $results = $this->buildCsv($series);
           break;
         default:
           $serializer = $container->get('serializer');
@@ -295,5 +296,19 @@ class ApiController extends Controller
 
       $xmlString = $xml->saveXML();
       return $xmlString;
+    }
+
+    function buildCsv($series){
+      $arrayKeys = $this->getObjectVariables($series);
+      // foreach ($series as $value) {
+      //   echo var_dump($value[0]);
+      // }
+    }
+
+    function getObjectVariables($array){
+      if(count($array) > 0){
+        $arrayKeys = array_keys(get_object_vars($array[0]));
+        return $arrayKeys;
+      }
     }
 }

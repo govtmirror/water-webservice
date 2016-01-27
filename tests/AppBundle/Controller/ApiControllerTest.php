@@ -250,6 +250,36 @@ class ApiControllerTest extends WebTestCase
       $this->assertEquals('wml', $result);
     }
 
+    /*
+    * @group new
+    */
+    function testGetObjectVariables(){
+      $series = new Seriescatalog();
+      $series->setParentid(14097);
+      $series->setIsfolder(0);
+      $series->setSortorder(0);
+      $series->seticonname("hdb");
+      $series->setname("LakeMohave: ReservoirWsElevationEndOfPerReadingUsedAsValueForPer");
+      $series->setSiteid("LakeMohave");
+      $series->setunits("feet");
+      $series->settimeinterval("Yearly");
+      $series->setparameter("ReservoirWsElevationEndOfPerReadingUsedAsValueForPer");
+      $series->settablename("lchdb2_yearly_2100");
+      $series->setprovider("HDBSeries");
+      $series->setconnectionstring("server=LCHDB2;sdi=2100;TimeInterval=Yearly;LastUpdate=06/17/2015 11:22");
+      $series->setexpression("");
+      $series->setnotes("");
+      $series->setenabled(1);
+
+      $seriesArray = array();
+      array_push($seriesArray, $series);
+
+      $arrayKeys = array('parentid','isfolder','sortorder','iconname','name','siteid','units','timeinterval','parameter','tablename','provider','connectionstring','expression','notes','enabled', 'id');
+      $apiController = new ApiController();
+      $result = $apiController->getObjectVariables($seriesArray);
+      $this->assertEquals($arrayKeys, $result);
+    }
+
     // TODO single characters are timezones. Fix in future
     // public function testgetDateTimeFromStringWithOnceCharacter()
     // {

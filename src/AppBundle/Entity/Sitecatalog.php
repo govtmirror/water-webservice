@@ -17,105 +17,105 @@ class Sitecatalog
      *
      * @ORM\Column(name="description", type="string", length=1024, nullable=false)
      */
-    private $description = '';
+    public $description = '';
 
     /**
      * @var string
      *
      * @ORM\Column(name="state", type="string", length=30, nullable=false)
      */
-    private $state = '';
+    public $state = '';
 
     /**
      * @var string
      *
      * @ORM\Column(name="latitude", type="string", length=30, nullable=false)
      */
-    private $latitude = '';
+    public $latitude = '';
 
     /**
      * @var string
      *
      * @ORM\Column(name="longitude", type="string", length=30, nullable=true)
      */
-    private $longitude = '';
+    public $longitude = '';
 
     /**
      * @var string
      *
      * @ORM\Column(name="timezone", type="string", length=30, nullable=false)
      */
-    private $timezone = '';
+    public $timezone = '';
 
     /**
      * @var string
      *
      * @ORM\Column(name="install", type="string", length=30, nullable=false)
      */
-    private $install = '';
+    public $install = '';
 
     /**
      * @var string
      *
      * @ORM\Column(name="horizontal_datum", type="string", length=30, nullable=false)
      */
-    private $horizontalDatum = '';
+    public $horizontalDatum = '';
 
     /**
      * @var string
      *
      * @ORM\Column(name="vertical_datum", type="string", length=30, nullable=false)
      */
-    private $verticalDatum = '';
+    public $verticalDatum = '';
 
     /**
      * @var float
      *
      * @ORM\Column(name="vertical_accuracy", type="float", precision=10, scale=0, nullable=false)
      */
-    private $verticalAccuracy = '0';
+    public $verticalAccuracy = '0';
 
     /**
      * @var string
      *
      * @ORM\Column(name="elevation_method", type="string", length=100, nullable=false)
      */
-    private $elevationMethod = '';
+    public $elevationMethod = '';
 
     /**
      * @var string
      *
      * @ORM\Column(name="tz_offset", type="string", length=10, nullable=false)
      */
-    private $tzOffset = '';
+    public $tzOffset = '';
 
     /**
      * @var string
      *
      * @ORM\Column(name="active_flag", type="string", length=1, nullable=false)
      */
-    private $activeFlag = 'T';
+    public $activeFlag = 'T';
 
     /**
      * @var string
      *
      * @ORM\Column(name="type", type="string", length=100, nullable=false)
      */
-    private $type = '';
+    public $type = '';
 
     /**
      * @var string
      *
      * @ORM\Column(name="responsibility", type="string", length=30, nullable=false)
      */
-    private $responsibility = '';
+    public $responsibility = '';
 
     /**
      * @var string
      *
      * @ORM\Column(name="agency_region", type="string", length=30, nullable=false)
      */
-    private $agencyRegion = '';
+    public $agencyRegion = '';
 
     /**
      * @var string
@@ -124,7 +124,7 @@ class Sitecatalog
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
-    private $siteid;
+    public $siteid;
 
     /**
      * @var string
@@ -133,7 +133,7 @@ class Sitecatalog
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
-    private $elevation;
+    public $elevation;
 
 
 
