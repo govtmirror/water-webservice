@@ -11,16 +11,6 @@ class ApiController extends Controller
 {
 
 //   use Symfony\Component\HttpFoundation\Response;
-//
-// // create a simple Response with a 200 status code (the default)
-// $response = new Response('Hello '.$name, Response::HTTP_OK);
-//
-// // create a JSON-response with a 200 status code
-// $response = new Response(json_encode(array('name' => $name)));
-// $response->headers->set('Content-Type', 'application/json');
-
-
-
     /**
      * @Route("/api/", name="API Home")
      * @Route("/api/index.html", name="API Home2")
@@ -32,29 +22,13 @@ class ApiController extends Controller
         return $response;
     }
 
-    public function returnCsvAction(){
-    // If you need to send a CSV file directly to the browser,
-    // without writing in an external file,
-    // you can open the output and use fputcsv on it..
-    //
-    // $out = fopen('php://output', 'w');
-    // fputcsv($out, array('this','is some', 'csv "stuff", you know.'));
-    // fclose($out);
-    //
-      $response->headers->set('Content-Type', 'text/csv');
-      $response->headers->set('Content-Disposition', 'attachment; filename="export.csv"');
-
-      return $response;
-    }
-
     /**
      * @Route("/api/series", name="series_v1")
      */
     public function seriesAction(Request $request)
     {
       $format = $this->getFormatParameter($request);
-      $results = $this->findAll("Seriescatalog", $format);
-      return $this->renderResults($results);
+      return $this->renderResults($results, $format);
     }
 
     /**
@@ -64,7 +38,7 @@ class ApiController extends Controller
     {
       $format = $this->getFormatParameter($request);
       $results = $this->findBySiteId("Seriescatalog", $format, $siteId);
-      return $this->renderResults($results);
+      return $this->renderResults($results, $format);
     }
 
     /**
@@ -75,7 +49,7 @@ class ApiController extends Controller
       $format = $this->getFormatParameter($request);
       $series = $this->getSeriesValues($request, $tablename);
       $results = $this->serializeResults($this->container, $series, $format);
-      return $this->renderResults($results);
+      return $this->renderResults($results, $format);
     }
 
     /**
@@ -87,7 +61,7 @@ class ApiController extends Controller
       $format = $this->getFormatParameter($request);
       $series = $this->getSeriesValues($request, $tablename);
       $results = $this->serializeResults($this->container, $series, $format);
-      return $this->renderResults($results);
+      return $this->renderResults($results, $format);
     }
 
 
@@ -98,7 +72,7 @@ class ApiController extends Controller
     {
       $format = $this->getFormatParameter($request);
       $results = $this->findAll("Sitecatalog", $format);
-      return $this->renderResults($results);
+      return $this->renderResults($results, $format);
     }
 
     /**
@@ -108,7 +82,7 @@ class ApiController extends Controller
     {
       $format = $this->getFormatParameter($request);
       $results = $this->findBySiteId("Sitecatalog", $format, $siteId);
-      return $this->renderResults($results);
+      return $this->renderResults($results, $format);
     }
 
     function getFormatParameter(Request $request){
@@ -204,9 +178,10 @@ class ApiController extends Controller
       return $date;
     }
 
-    function renderResults($results){
-      return $this->render('api/v1/results.html.twig', array(
+    function renderResults($results, $format){
+      return $this->render(':api/v1:results.html.php', array(
           'results' => $results,
+          'format' => $format
       ));
     }
 
@@ -309,34 +284,34 @@ class ApiController extends Controller
       return $xmlString;
     }
 
-    function buildCsv($series){
-      $header = $this -> buildHeader($series);
+    function buildCsv($results){
+      $csvResults = array();
+      $rawCsvResults = "";
+      $header = $this -> buildHeader($results);
+      array_push($csvResults, $header);
 
-      // foreach ($series as $value) {
-      //   echo var_dump($value[0]);
-      // }
+      foreach ($results as $key) {
+        array_push($csvResults, join(",", $key));
+      }
+
+      foreach ($csvResults as $result) {
+        $rawCsvResults .= $result."\n";
+      }
+
+      return $rawCsvResults;
     }
 
     function buildHeader($array){
       $arrayKeys = $this->getObjectVariables($array);
       $keysCount = count($arrayKeys);
-      $count = 0;
-      $header = "";
-      foreach ($arrayKeys as $key => $value) {
-        $header = $header.$value;
+      $header = join(",", $arrayKeys);
 
-        // Add the comma if it isn't the last object in the array
-        $count++;
-        if($count != $keysCount){
-          $header = $header.", ";
-        }
-      }
       return $header;
     }
 
     function getObjectVariables($array){
       if(count($array) > 0){
-        $arrayKeys = array_keys(get_object_vars($array[0]));
+        $arrayKeys = array_keys($array[0]);
         return $arrayKeys;
       }
     }
