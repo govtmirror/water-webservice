@@ -28,7 +28,8 @@ class ApiController extends Controller
     public function seriesAction(Request $request)
     {
       $format = $this->getFormatParameter($request);
-      return $this->renderResults($results, $format);
+      $download = $this->getDownloadParameter($request);
+      return $this->renderResults($results, $format, $download);
     }
 
     /**
@@ -37,8 +38,9 @@ class ApiController extends Controller
     public function seriesDetailAction(Request $request, $siteId)
     {
       $format = $this->getFormatParameter($request);
+      $download = $this->getDownloadParameter($request);
       $results = $this->findBySiteId("Seriescatalog", $format, $siteId);
-      return $this->renderResults($results, $format);
+      return $this->renderResults($results, $format, $download);
     }
 
     /**
@@ -47,9 +49,10 @@ class ApiController extends Controller
     public function seriesValuesAction(Request $request, $siteId, $tablename)
     {
       $format = $this->getFormatParameter($request);
+      $download = $this->getDownloadParameter($request);
       $series = $this->getSeriesValues($request, $tablename);
       $results = $this->serializeResults($this->container, $series, $format);
-      return $this->renderResults($results, $format);
+      return $this->renderResults($results, $format, $download);
     }
 
     /**
@@ -59,9 +62,10 @@ class ApiController extends Controller
     {
       //Controller handles WML@ Requests
       $format = $this->getFormatParameter($request);
+      $download = $this->getDownloadParameter($request);
       $series = $this->getSeriesValues($request, $tablename);
       $results = $this->serializeResults($this->container, $series, $format);
-      return $this->renderResults($results, $format);
+      return $this->renderResults($results, $format, $download);
     }
 
 
@@ -71,8 +75,9 @@ class ApiController extends Controller
     public function sitesAction(Request $request)
     {
       $format = $this->getFormatParameter($request);
+      $download = $this->getDownloadParameter($request);
       $results = $this->findAll("Sitecatalog", $format);
-      return $this->renderResults($results, $format);
+      return $this->renderResults($results, $format, $download);
     }
 
     /**
@@ -81,8 +86,9 @@ class ApiController extends Controller
     public function siteDetailAction(Request $request, $siteId)
     {
       $format = $this->getFormatParameter($request);
+      $download = $this->getDownloadParameter($request);
       $results = $this->findBySiteId("Sitecatalog", $format, $siteId);
-      return $this->renderResults($results, $format);
+      return $this->renderResults($results, $format, $download);
     }
 
     function getFormatParameter(Request $request){
@@ -93,6 +99,16 @@ class ApiController extends Controller
           $format = $requestParams['Format'];
         }
         return $format;
+    }
+
+    function getDownloadParameter(Request $request){
+        // Default to false
+        $download = "false";
+        $requestParams = $this->getRequestParams($request);
+        if(isset($requestParams['Download'])){
+          $download = $requestParams['Download'];
+        }
+        return $download;
     }
 
     function getSeriesValues($request, $tablename)
@@ -153,9 +169,14 @@ class ApiController extends Controller
         $requestParams['End'] = $endDate;
       }
 
-      $format = $request->query->get('Format');
+      $format = $request->query->get('format');
       if($format != null){
-        $requestParams['Format'] = $format;
+        $requestParams['Format'] = strtolower($format);
+      }
+
+      $download = $request->query->get('download');
+      if($download != null){
+        $requestParams['Download'] = strtolower($download);
       }
 
       return $requestParams;
@@ -178,10 +199,11 @@ class ApiController extends Controller
       return $date;
     }
 
-    function renderResults($results, $format){
+    function renderResults($results, $format, $download){
       return $this->render(':api/v1:results.html.php', array(
           'results' => $results,
-          'format' => $format
+          'format' => $format,
+          'download' => $download,
       ));
     }
 
