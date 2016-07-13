@@ -11,12 +11,13 @@
     mysql> create database timeseries;
     mysql> exit;
     cd /path/to/db_timeseries.sql/
-    mysql -u root -p timeseries < db_timeseries.sql
+    tar -xvzf db_timeseries.sql.tar.gzv
+    mysql -u [username] -p timeseries < db_timeseries.sql
 
 #### Composer
 *Note: There is currently an error when composer tries to clear cache. It points to the wrong folder. This shouldn't effect any of the installed packages.*
 
-*When composer reaches the database creation portion, use the same username and password from above. You can change this in parameters.yml later.*
+*When composer reaches the database creation portion, use the same username and password and the database 'timeseries' from above. You can change this in parameters.yml later.*
 
     curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
     cd /path/to/project
