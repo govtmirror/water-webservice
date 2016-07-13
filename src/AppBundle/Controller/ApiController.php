@@ -243,8 +243,7 @@ class ApiController extends Controller
           $results = $this->buildCsv($series);
           break;
         default:
-          $serializer = $container->get('serializer');
-          $results = $serializer->serialize($series, $format);
+          $results = "Sorry, this format is not yet supported";
           break;
       }
       return $results;
