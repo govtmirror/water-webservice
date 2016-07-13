@@ -200,11 +200,16 @@ class ApiController extends Controller
     }
 
     function renderResults($results, $format, $download){
-      return $this->render(':api/v1:results.html.php', array(
+      $response = $this->render('api/v1/results.html.twig', array(
           'results' => $results,
           'format' => $format,
-          'download' => $download,
       ));
+
+      if($download == 'true')
+      {
+        $response->headers->set('Content-Disposition', 'attachment; filename="data.'.$format.'"');
+      }
+      return $response;
     }
 
     function findAll($catalog, $format){
@@ -332,6 +337,7 @@ class ApiController extends Controller
 
     function getObjectVariables($array){
       if(count($array) > 0){
+        // $arrayKeys = array_keys(get_object_vars($array[0]));
         $arrayKeys = array_keys($array[0]);
         return $arrayKeys;
       }
